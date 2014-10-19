@@ -1,13 +1,9 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 activity_data <- read.csv("activity.csv")
 ```
 
@@ -16,16 +12,32 @@ activity_data <- read.csv("activity.csv")
 
 Here is the mean  total of steps taken per day:
 
-```{r}
+
+```r
 #Get total steps summed by date
 total_steps <- tapply(activity_data$steps, activity_data$date, FUN=sum, na.rm=TRUE)
 
 #Plot out the histogram
 library(ggplot2)
 qplot(total_steps, binwidth=1000, xlab="Total number of steps taken each day")
-mean(total_steps, na.rm=TRUE)
-median(total_steps, na.rm=TRUE)
+```
 
+![](./PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
+```r
+mean(total_steps, na.rm=TRUE)
+```
+
+```
+## [1] 9354.23
+```
+
+```r
+median(total_steps, na.rm=TRUE)
+```
+
+```
+## [1] 10395
 ```
 
 ## What is the average daily activity pattern?
@@ -36,7 +48,8 @@ median(total_steps, na.rm=TRUE)
 
 The average daily number of steps by 5 minute intervals
 
-```{r}
+
+```r
 average_steps <- aggregate(x=list(steps=activity_data$steps), 
                            by=list(interval=activity_data$interval),
                            FUN=mean, na.rm=TRUE)
@@ -53,9 +66,17 @@ ggplot(data=average_steps, aes(x=interval, y=steps)) +
 	   geom_text(data= max_average, label="Max", vjust=1) 
 ```
 
+![](./PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
 The maximum average is
-```{r}
+
+```r
 max_average
+```
+
+```
+##     interval    steps
+## 104      835 206.1698
 ```
 
 ## Imputing missing values
@@ -63,12 +84,21 @@ max_average
 Histogram with missing steps filled with the mean value of the 5 minute intervals
 
 
-```{r}
+
+```r
 ##Find the missing values
 
 missing_steps <- is.na(activity_data$steps)
 table(missing_steps)
+```
 
+```
+## missing_steps
+## FALSE  TRUE 
+## 15264  2304
+```
+
+```r
 #Function to fill in the missing steps with the mean value of the 5 minute intervals
 fill_value <- function(steps, interval) {
     filled <- NA
@@ -84,9 +114,24 @@ filled_steps$steps <- mapply(fill_value, filled_steps$steps, filled_steps$interv
 #Histogram of the modified activity data using the mean value for NA
 total_steps <- tapply(filled_steps$steps, filled_steps$date, FUN=sum)
 qplot(total_steps, binwidth=1000, xlab="Total number of steps taken each day*")
-mean(total_steps)
-median(total_steps)
+```
 
+![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+
+```r
+mean(total_steps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
+median(total_steps)
+```
+
+```
+## [1] 10766.19
 ```
 
 
@@ -94,7 +139,8 @@ median(total_steps)
 
 Plot of the differences between weekday and weekend activity
 
-```{r}
+
+```r
 #Function to determine if weekday or weekend
 weekday_weekend <- function(date) {
     day <- weekdays(date)
@@ -114,3 +160,5 @@ averages <- aggregate(steps ~ interval + day, data=filled_steps, mean)
 ggplot(averages, aes(interval, steps)) + geom_line() + facet_grid(day ~ .) +
     xlab("5 Minute interval") + ylab("Number of steps")
 ```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
