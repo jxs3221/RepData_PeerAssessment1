@@ -8,6 +8,7 @@ output:
 
 ## Loading and preprocessing the data
 
+
 ```r
 activity_data <- read.csv("activity.csv")
 ```
