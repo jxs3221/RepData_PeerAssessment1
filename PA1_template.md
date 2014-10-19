@@ -1,4 +1,9 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
 
 ## Loading and preprocessing the data
@@ -22,7 +27,7 @@ library(ggplot2)
 qplot(total_steps, binwidth=1000, xlab="Total number of steps taken each day")
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
 
 ```r
 mean(total_steps, na.rm=TRUE)
@@ -66,7 +71,7 @@ ggplot(data=average_steps, aes(x=interval, y=steps)) +
 	   geom_text(data= max_average, label="Max", vjust=1) 
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
 The maximum average is
 
@@ -116,7 +121,7 @@ total_steps <- tapply(filled_steps$steps, filled_steps$date, FUN=sum)
 qplot(total_steps, binwidth=1000, xlab="Total number of steps taken each day*")
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
 
 ```r
 mean(total_steps)
@@ -161,4 +166,4 @@ ggplot(averages, aes(interval, steps)) + geom_line() + facet_grid(day ~ .) +
     xlab("5 Minute interval") + ylab("Number of steps")
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
